@@ -15,6 +15,7 @@ Add `geoquery_firestore` to your `pubspec.yaml`:
 ```yaml
 dependencies:
   geoquery_firestore: ^0.0.1
+```
 
 ## Usage
 
