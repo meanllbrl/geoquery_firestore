@@ -29,7 +29,6 @@ GeoQueryFirestore geoQuery = GeoQueryFirestore(
   query: firestore.collection('your_collection').where('your_field', isEqualTo: 'your_value'),
   geohashFieldPath: 'location.geohash',
 );
-
 ```
 
 ## Range Query
