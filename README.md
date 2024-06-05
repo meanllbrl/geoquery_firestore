@@ -1,5 +1,9 @@
 ## Introduction
 
+
+https://github.com/meanllbrl/geoquery_firestore/assets/83311854/dba4ac67-d3c1-43d1-9389-2756b52427e4
+
+
 GeoQueryFirestore is a comprehensive package designed to facilitate efficient and performant geospatial queries within Firestore, a NoSQL database. While existing packages like GeoFlutterFire offer basic geospatial functionality, GeoQueryFirestore addresses their limitations by enabling orderby, limit, and pagination capabilities, particularly crucial for large datasets.
 
 ## Motivation
@@ -18,7 +22,7 @@ GeoQueryFirestore operates by intelligently selecting the appropriate precision 
 
 ## Database Structure
 
-To effectively utilize GeoQueryFirestore, the Firestore database should be structured as follows:
+To effectively utilize GeoQueryFirestore, the Firestore database should be structured as follows: 
 
 - **Geohash Array** Each Firestore document must contain a field holding an array of GeoHashes representing the document's location. The field name can be customized as per the developer's preference.
 - **Geohash Precision** For optimal performance, ensure the GeoHash precision aligns with the query requirements. For instance, a precision of 8 characters (e.g., swg5r323) is recommended for most use cases.
