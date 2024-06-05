@@ -31,6 +31,23 @@ void main() {
             .geohash;
         expect(geohashes.contains(centerGeohash), isTrue);
       });
+
+      test("Gives error missing custom range", () {
+        void geohashes() => geoQueryGeohashService.getSurroundingGeohashes(
+            GeoQueryFirestoreRanges.custom,
+            customRangeInMeters: null);
+        expect(geohashes, throwsA(isException));
+      });
+
+      test("Setting custom range", () {
+        final geohashes = geoQueryGeohashService.getSurroundingGeohashes(
+            GeoQueryFirestoreRanges.custom,
+            customRangeInMeters: 80000);
+        final geohashes2 = geoQueryGeohashService.getSurroundingGeohashes(
+          GeoQueryFirestoreRanges.km80,
+        );
+        expect(geohashes.toSet().containsAll(geohashes2), isTrue);
+      });
     });
 
     group("getCompleteGeohashesByLatLngBounds", () {

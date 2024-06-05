@@ -32,13 +32,26 @@ class GeohashGeneratingService {
   ///
   /// Returns:
   ///   (List<String>): A list of `String` geohashes covering the area around the center point.
-  List<String> getSurroundingGeohashes(GeoQueryFirestoreRanges selectedRange) {
+  List<String> getSurroundingGeohashes(GeoQueryFirestoreRanges selectedRange,
+      {double? customRangeInMeters}) {
+    if (selectedRange == GeoQueryFirestoreRanges.custom &&
+        customRangeInMeters == null) {
+      throw Exception(
+          "If you set `selectedRange` = `GeoQueryFirestoreRanges.custom`, You Need To Define `customRange` ");
+    }
     final latitude = centerPoint.latitude;
     final longitude = centerPoint.longitude;
 
-    final selectedDetails = geohashData[selectedRange]!;
+    GeoQueryFirestoreGeohashDetails selectedDetails;
+    if (selectedRange == GeoQueryFirestoreRanges.custom) {
+      selectedDetails = _determineBestGeoQueryFirestoreGeohashDetailsForRadius(
+          customRangeInMeters!);
+    } else {
+      selectedDetails = geohashData[selectedRange]!;
+    }
+
     final precision = selectedDetails.precision;
-    final distanceInMeters = selectedDetails.lengthInMeters;
+    final distanceInMeters = selectedDetails.radiusInMeters;
 
     final centerGeohash =
         GeoHash.fromDecimalDegrees(longitude, latitude, precision: precision);
@@ -111,7 +124,7 @@ class GeohashGeneratingService {
     final area = _calculateAreaOfLatLngBounds(mapBounds);
 
     // Determine the optimal geohash precision for the area.
-    final bestPrecision = _determineBestPrecision(area);
+    final bestPrecision = _determineBestPrecisionForAreas(area);
 
     // Get the geohash for the center point with the best precision.
     final centerHash = GeoHash.fromDecimalDegrees(
@@ -168,7 +181,7 @@ class GeohashGeneratingService {
   ///
   /// Returns:
   ///   (int): The most suitable geohash precision for the given area.
-  int _determineBestPrecision(double area) {
+  int _determineBestPrecisionForAreas(double area) {
     // Sort geohash options by their closeness to the ideal area per geohash.
     final geohashOptions = geohashData.values.toList()
       ..sort((a, b) {
@@ -196,6 +209,31 @@ class GeohashGeneratingService {
     }
 
     return bestPrecision;
+  }
+
+  /// Determines the optimal geohash precision for covering a given radius.
+  ///
+  /// This function selects the geohash precision that offers the closest area
+  /// to an ideal size (one-ninth of the provided area) while maintaining a
+  /// maximum error tolerance of 25%.
+  ///
+  /// Args:
+  ///   * `radiusInMeters` (double): The area in square meters to be covered by geohashes.
+  ///
+  /// Returns:
+  ///   (GeoQueryFirestoreGeohashDetails): The most suitable GeoQueryFirestoreGeohashDetails
+  GeoQueryFirestoreGeohashDetails
+      _determineBestGeoQueryFirestoreGeohashDetailsForRadius(
+          double radiusInMeters) {
+    // Sort geohash options by their closeness to the ideal area per geohash.
+    final geohashOptions = geohashData.values.toList()
+      ..sort((a, b) {
+        return (radiusInMeters - a.radiusInMeters)
+            .abs()
+            .compareTo((radiusInMeters - b.radiusInMeters).abs());
+      });
+
+    return geohashOptions.first;
   }
 
   /// Calculates the area of the provided `LatLngBounds` in square meters.
