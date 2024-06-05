@@ -22,6 +22,8 @@ GeoQueryFirestore operates by intelligently selecting the appropriate precision 
 
 ## Database Structure
 
+![Adsız tasarım (1)](https://github.com/meanllbrl/geoquery_firestore/assets/83311854/5afbbe7a-f5a9-48c8-bb21-a02abfb3549b)
+
 To effectively utilize GeoQueryFirestore, the Firestore database should be structured as follows: 
 
 - **Geohash Array** Each Firestore document must contain a field holding an array of GeoHashes representing the document's location. The field name can be customized as per the developer's preference.
