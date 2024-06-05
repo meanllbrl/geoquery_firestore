@@ -1,14 +1,16 @@
 name: geoquery_firestore
-description: A starting point for Dart libraries or applications.
+description: A Dart package for querying Firestore documents based on geohashes. This package allows you to filter documents by range, load more documents with paging, and query documents within map bounds.
 version: 0.0.1
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/meanllbrl/geoquery_firestore
 
 environment:
   sdk: ^3.3.4
 
 dependencies:
   cloud_firestore: ^3.1.5
+  dart_geohash: ^2.0.2
+  latlong2: ^0.9.1
 
 dev_dependencies:
   lints: ^3.0.0
-  test: ^1.24.0
+  test: 
