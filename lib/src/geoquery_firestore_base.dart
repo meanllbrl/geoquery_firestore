@@ -87,7 +87,9 @@ class GeoQueryFirestore {
     final List<DocumentSnapshot> documents = (await firestoreQuery.get()).docs;
 
     // Update the last document for the current query execution (identified by `id`)
-    _lastDocuments[id] = documents.lastOrNull ?? EmptySnapshot();
+    _lastDocuments[id] = documents.length < limit
+        ? EmptySnapshot()
+        : (documents.lastOrNull ?? EmptySnapshot());
     _lastGeoHashes[id] = searchHashes;
 
     return documents;
@@ -133,7 +135,9 @@ class GeoQueryFirestore {
 
     // Loop to set queries
     for (var i = 0; i < queries.length; i++) {
-      if (searchHashes[i].isEmpty || _lastDocuments[i] is EmptySnapshot) continue;
+      if (searchHashes[i].isEmpty || _lastDocuments[i] is EmptySnapshot) {
+        continue;
+      }
       queries[i] = query
           .where(geohashFieldPath, arrayContainsAny: searchHashes[i])
           .limit(limit);
@@ -152,7 +156,9 @@ class GeoQueryFirestore {
       var docs = (await query!.get()).docs;
 
       //set last document
-      _lastDocuments[i] = docs.lastOrNull ?? EmptySnapshot();
+      _lastDocuments[i] = docs.length < limit
+          ? EmptySnapshot()
+          : (docs.lastOrNull ?? EmptySnapshot());
       _lastGeoHashes[i] = searchHashes[0];
       documents.addAll(docs);
       i++;
