@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class EmptySnapshot extends DocumentSnapshot{
+class EmptySnapshot extends DocumentSnapshot {
   @override
   operator [](Object field) {
     throw UnimplementedError();

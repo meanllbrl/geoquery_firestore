@@ -37,12 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-
     // Perform a geospatial query around the current location
     _performQuery();
   }
-
- 
 
   void _performQuery() {
     // Create a GeoQueryFirestore instance
@@ -52,10 +49,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     // Perform a geospatial query within the specified range
-    query.byRange(_center, selectedRange: GeoQueryFirestoreRanges.km20).then((documents) {
+    query
+        .byRange(_center, selectedRange: GeoQueryFirestoreRanges.km20)
+        .then((documents) {
       // Extract restaurant names
       setState(() {
-        _restaurants = documents.map((document) => document['name'] as String).toList();
+        _restaurants =
+            documents.map((document) => document['name'] as String).toList();
       });
     });
   }
@@ -77,7 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 16),
             if (_restaurants.isNotEmpty)
               Column(
-                children: _restaurants.map((restaurant) => Text(restaurant)).toList(),
+                children:
+                    _restaurants.map((restaurant) => Text(restaurant)).toList(),
               ),
             if (_restaurants.isEmpty)
               Text('No restaurants found in this area.'),
