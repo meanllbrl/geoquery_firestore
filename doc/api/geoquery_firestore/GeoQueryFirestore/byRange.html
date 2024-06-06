@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the byRange method from the GeoQueryFirestore class, for the Dart programming language.">
+  <title>byRange method - GeoQueryFirestore class - geoquery_firestore library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">geoquery_firestore</a></li>
+    <li><a href="../../geoquery_firestore/geoquery_firestore-library.html">geoquery_firestore.dart</a></li>
+    <li><a href="../../geoquery_firestore/GeoQueryFirestore-class.html">GeoQueryFirestore</a></li>
+    <li class="self-crumb">byRange method</li>
+  </ol>
+  <div class="self-name">byRange</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="geoquery_firestore&#47;GeoQueryFirestore-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-method">byRange</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.dart.dev/stable/3.3.4/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.3.4/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/cloud_firestore/5.0.0/cloud_firestore/DocumentSnapshot-class.html">DocumentSnapshot</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.3.4/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+<span class="name ">byRange</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="byRange-param-center"><span class="type-annotation"><a href="https://pub.dev/documentation/latlong2/0.9.1/latlong2/LatLng-class.html">LatLng</a></span> <span class="parameter-name">center</span>, </span></li>
+<li><span class="parameter" id="byRange-param-selectedRange">{<span>required</span> <span class="type-annotation">GeoQueryFirestoreRanges</span> <span class="parameter-name">selectedRange</span>, </span></li>
+<li><span class="parameter" id="byRange-param-customRangeInMeters"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.4/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">customRangeInMeters</span>, </span></li>
+<li><span class="parameter" id="byRange-param-startAfterDocument"><span class="type-annotation"><a href="https://pub.dev/documentation/cloud_firestore/5.0.0/cloud_firestore/DocumentSnapshot-class.html">DocumentSnapshot</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.3.4/dart-core/Object-class.html">Object</a>?</span>&gt;</span>?</span> <span class="parameter-name">startAfterDocument</span>, </span></li>
+<li><span class="parameter" id="byRange-param-enablePagination"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enablePagination</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="byRange-param-limit"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.4/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span> = <span class="default-value">20</span>}</span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Retrieves documents within a specified geospatial range from a given center point.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>center</code>: The center point (latitude and longitude) of the search area.</li>
+<li><code>selectedRange</code>: A predefined geospatial range (e.g., <code>GeoQueryFirestoreRanges.km20</code>).</li>
+<li><code>customRangeInMeters</code> (optional): A custom range in meters if <code>selectedRange</code> is <code>GeoQueryFirestoreRanges.custom</code>.</li>
+<li><code>startAfterDocument</code> (optional): The document snapshot to start after for pagination.</li>
+<li><code>enablePagination</code> (optional): Whether to enable paging for retrieving results in batches. Defaults to <code>false</code>.</li>
+<li><code>limit</code> (optional): The maximum number of documents to retrieve in a single query. Defaults to 20.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;DocumentSnapshot&gt;&gt; byRange(
+  LatLng center, {
+  required GeoQueryFirestoreRanges selectedRange,
+  double? customRangeInMeters,
+  DocumentSnapshot? startAfterDocument,
+  bool enablePagination = false,
+  int limit = 20,
+}) async {
+  int id = 3;
+  &#47;&#47; Generate GeoHashes based on the chosen range or custom radius
+  List&lt;String&gt; searchHashes = GeohashGeneratingService(centerPoint: center)
+      .getSurroundingGeohashes(selectedRange,
+          customRangeInMeters: customRangeInMeters);
+  &#47;&#47; Construct the Firestore query with GeoHash filtering
+  Query firestoreQuery = query
+      .where(geohashFieldPath, arrayContainsAny: searchHashes)
+      .limit(limit);
+
+  &#47;&#47; Apply pagination logic if enabled
+  if (enablePagination) {
+    if (startAfterDocument != null) {
+      firestoreQuery = firestoreQuery.startAfterDocument(startAfterDocument);
+    } else if (_lastDocuments[id] != null) {
+      firestoreQuery = firestoreQuery.startAfterDocument(_lastDocuments[id]!);
+    }
+  }
+
+  &#47;&#47; Execute the Firestore query and retrieve documents
+  final List&lt;DocumentSnapshot&gt; documents = (await firestoreQuery.get()).docs;
+
+  &#47;&#47; Update the last document for the current query execution (identified by `id`)
+  _lastDocuments[id] = documents.lastOrNull;
+
+  return documents;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">geoquery_firestore</a></li>
+    <li><a href="../../geoquery_firestore/geoquery_firestore-library.html">geoquery_firestore</a></li>
+    <li><a href="../../geoquery_firestore/GeoQueryFirestore-class.html">GeoQueryFirestore</a></li>
+    <li class="self-crumb">byRange method</li>
+</ol>
+
+
+    <h5>GeoQueryFirestore class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    geoquery_firestore
+      0.0.2
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

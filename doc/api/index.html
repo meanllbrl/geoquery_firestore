@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 8.0.3">
+  <meta name="description" content="geoquery_firestore API docs, for the Dart programming language.">
+  <title>geoquery_firestore - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">geoquery_firestore package</li>
+  </ol>
+  <div class="self-name">geoquery_firestore</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h2 id="introduction">Introduction</h2>
+<p><a href="https://github.com/meanllbrl/geoquery_firestore/assets/83311854/dba4ac67-d3c1-43d1-9389-2756b52427e4">https://github.com/meanllbrl/geoquery_firestore/assets/83311854/dba4ac67-d3c1-43d1-9389-2756b52427e4</a></p>
+<p>GeoQueryFirestore is a comprehensive package designed to facilitate efficient and performant geospatial queries within Firestore, a NoSQL database. While existing packages like GeoFlutterFire offer basic geospatial functionality, GeoQueryFirestore addresses their limitations by enabling orderby, limit, and pagination capabilities, particularly crucial for large datasets.</p>
+<h2 id="motivation">Motivation</h2>
+<p>The primary motivation behind GeoQueryFirestore is to address the shortcomings of existing geospatial query packages for Firestore. While these packages provide basic functionality, they lack essential features like:</p>
+<ul>
+<li><strong>Orderby:</strong> The ability to sort results based on a specified field, crucial for organizing and retrieving data in a meaningful order.</li>
+<li><strong>Limit:</strong> The ability to restrict the number of results returned, essential for preventing performance bottlenecks and managing data retrieval efficiently.</li>
+<li><strong>Pagination:</strong> The ability to retrieve results in batches, particularly important for large datasets and handling paginated user interfaces.</li>
+</ul>
+<p>These limitations hinder the effective utilization of geospatial queries in Firestore, especially for large-scale applications. GeoQueryFirestore aims to bridge this gap by providing a robust and performant solution for geospatial queries in Firestore.</p>
+<h2 id="system-overview">System Overview</h2>
+<p>GeoQueryFirestore operates by intelligently selecting the appropriate precision level based on the provided range or map boundaries. It then identifies the potential GeoHashes within the specified area, enabling efficient filtering and retrieval of documents based on their coordinates.</p>
+<h2 id="database-structure">Database Structure</h2>
+<p><img src="https://github.com/meanllbrl/geoquery_firestore/assets/83311854/5afbbe7a-f5a9-48c8-bb21-a02abfb3549b" alt="Adsız tasarım (1)"></p>
+<p>To effectively utilize GeoQueryFirestore, the Firestore database should be structured as follows:</p>
+<ul>
+<li><strong>Geohash Array</strong> Each Firestore document must contain a field holding an array of GeoHashes representing the document's location. The field name can be customized as per the developer's preference.</li>
+<li><strong>Geohash Precision</strong> For optimal performance, ensure the GeoHash precision aligns with the query requirements. For instance, a precision of 8 characters (e.g., swg5r323) is recommended for most use cases.</li>
+</ul>
+<h2 id="example-usage">Example Usage</h2>
+<p>GeoQueryFirestore provides convenient methods for performing various geospatial queries:</p>
+<h3 id="by-range">By Range:</h3>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>center</code>: The center point (latitude and longitude) of the search area.</li>
+<li><code>selectedRange</code>: A predefined geospatial range (e.g., <code>GeoQueryFirestoreRanges.km20</code>).</li>
+<li><code>customRangeInMeters</code> (optional): A custom range in meters if <code>selectedRange</code> is <code>GeoQueryFirestoreRanges.custom</code>.</li>
+<li><code>startAfterDocument</code> (optional): The document snapshot to start after for pagination.</li>
+<li><code>enablePagination</code> (optional): Whether to enable paging for retrieving results in batches. Defaults to <code>false</code>.</li>
+<li><code>limit</code> (optional): The maximum number of documents to retrieve in a single query. Defaults to 20.</li>
+</ul>
+<pre class="language-dart"><code class="language-dart">final center = LatLng(37.7749, -122.4194); // Center point
+final range = GeoQueryFirestoreRanges.km20; // Search range (20 kilometers)
+
+final query = GeoQueryFirestore(
+  query: FirebaseFirestore.instance.collection('restaurants'),
+  geohashFieldPath: 'location.geohashes',
+);
+
+final documents = await query.byRange(
+  center: center,
+  selectedRange: range,
+);
+</code></pre>
+<p><strong>Give Custom Range</strong></p>
+<pre class="language-dart"><code class="language-dart">final documents = await query.byRange(
+  center: center,
+  selectedRange: GeoQueryFirestoreRanges.custom,
+  customRangeInMeters: 10000
+);
+</code></pre>
+<p><strong>Enable Pagination</strong>
+<em>It will automatically store the last document and start after the document. To reset call <code>query.resetPagination()</code></em></p>
+<pre class="language-dart"><code class="language-dart">final documents = await query.byRange(
+  center: center,
+  selectedRange: GeoQueryFirestoreRanges.custom,
+  customRangeInMeters: 10000,
+  enablePagination:true
+);
+</code></pre>
+<p><strong>Handle Pagination Yourself</strong></p>
+<pre class="language-dart"><code class="language-dart">final documents = await query.byRange(
+  center: center,
+  selectedRange: GeoQueryFirestoreRanges.custom,
+  customRangeInMeters: 10000,
+  enablePagination:true,
+  startAfterDocument:theDocument
+);
+</code></pre>
+<p><strong>Limit the Document Number</strong>
+<em>limit is set 20 as default</em></p>
+<pre class="language-dart"><code class="language-dart">final documents = await query.byRange(
+  center: center,
+  selectedRange: GeoQueryFirestoreRanges.custom,
+  customRangeInMeters: 10000,
+  enablePagination:true,
+  startAfterDocument:theDocument,
+  limit:10
+);
+</code></pre>
+<h3 id="by-map-bounds">By Map Bounds:</h3>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>bounds</code>: The <code>LatLngBounds</code> object defining the search area.</li>
+<li><code>strict</code> (optional): Whether to use a stricter approach for filtering GeoHashes within bounds. Defaults to <code>true</code>.</li>
+<li><code>enablePagination</code> (optional): Whether to enable paging for retrieving results in batches. Defaults to <code>false</code>.</li>
+<li><code>limit</code> (optional): The maximum number of documents to retrieve in a single query. Defaults to 20.</li>
+</ul>
+<pre class="language-dart"><code class="language-dart">final bounds = LatLngBounds(LatLng(37.7131, -122.4194), LatLng(37.8354, -122.3792)); // Search bounds
+final strict = true; // Strict boundary adherence
+
+final query = GeoQueryFirestore(
+  query: FirebaseFirestore.instance.collection('restaurants'),
+  geohashFieldPath: 'location.geohashes',
+);
+
+final documents = await query.byMapBounds(
+  bounds: bounds,
+  strict: strict,
+);
+</code></pre>
+<p><strong>Enable Pagination</strong>
+<em>It will automatically store the last document and start after the document. To reset call <code>query.resetPagination()</code></em></p>
+<pre class="language-dart"><code class="language-dart">final documents = await query.byMapBounds(
+  bounds: bounds,
+  strict: strict,
+  enablePagination:true
+);
+</code></pre>
+<p><strong>Limit the Document Number</strong>
+<em>limit is set 20 as default</em></p>
+<pre class="language-dart"><code class="language-dart">final documents = await query.byMapBounds(
+  bounds: bounds,
+  strict: strict,
+  enablePagination:true,
+  limit: 10
+);
+</code></pre>
+<h3 id="warnings">Warnings</h3>
+<ul>
+<li>This is a solution, but it does not work 100% correctly. GeoHashes divide the Earth's surface into hexagonal cells, and their boundaries may not perfectly align with the actual search area, especially for irregular shapes or areas close to GeoHash cell boundaries. This can lead to some edge cases where documents might fall outside the intended search area.</li>
+<li>You may receive an index error on the first run of your detailed queries. You can create an index with the link in the error message. It will then start working.</li>
+</ul>
+<h3 id="recommendations">Recommendations</h3>
+<ul>
+<li>To understand more of the geohashes you can look up <a href="https://geohash.softeng.co/s">https://geohash.softeng.co/s</a> &amp; <a href="https://en.wikipedia.org/wiki/Geohash">https://en.wikipedia.org/wiki/Geohash</a></li>
+</ul>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="geoquery_firestore">
+  <span class="name"><a href="geoquery_firestore/geoquery_firestore-library.html">geoquery_firestore</a></span> 
+
+</dt>
+<dd>Support for doing something awesome.
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">geoquery_firestore package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">geoquery_firestore</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="geoquery_firestore/geoquery_firestore-library.html">geoquery_firestore</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    geoquery_firestore
+      0.0.2
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
