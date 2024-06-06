@@ -133,7 +133,7 @@ class GeoQueryFirestore {
 
     // Loop to set queries
     for (var i = 0; i < queries.length; i++) {
-      if (searchHashes[i].isEmpty || _lastDocuments[i] is EmptySnapshot) break;
+      if (searchHashes[i].isEmpty || _lastDocuments[i] is EmptySnapshot) continue;
       queries[i] = query
           .where(geohashFieldPath, arrayContainsAny: searchHashes[i])
           .limit(limit);
