@@ -151,7 +151,7 @@ class GeoQueryFirestore {
 
       //set last document
       _lastDocuments[i] = docs.lastOrNull;
-      _lastGeoHashes[i] = searchHashes[0] + searchHashes[1];
+      _lastGeoHashes[i] = searchHashes[0];
       documents.addAll(docs);
       i++;
     }
