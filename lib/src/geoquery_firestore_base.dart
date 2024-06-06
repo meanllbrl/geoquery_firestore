@@ -152,8 +152,9 @@ class GeoQueryFirestore {
     List<DocumentSnapshot> documents = [];
 
     int i = 0;
-    for (var query in queries.where((element) => element != null)) {
-      var docs = (await query!.get()).docs;
+    for (var query in queries) {
+      if (query == null) continue;
+      var docs = (await query.get()).docs;
 
       //set last document
       _lastDocuments[i] = docs.length < limit
