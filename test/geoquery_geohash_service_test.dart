@@ -1,6 +1,6 @@
 import 'package:dart_geohash/dart_geohash.dart';
 import 'package:test/test.dart';
-import 'package:geoquery_firestore/src/enums/enums.dart';
+import 'package:geoquery_firestore/enums/enums.dart';
 import 'package:geoquery_firestore/src/models/latlng_bounds.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geoquery_firestore/src/services/geohash_generating_service.dart';

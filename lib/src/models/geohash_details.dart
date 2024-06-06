@@ -1,4 +1,4 @@
-import 'package:geoquery_firestore/src/enums/enums.dart';
+import 'package:geoquery_firestore/enums/enums.dart';
 
 /// A class representing geohash details such as precision, area, and length in meters.
 class GeoQueryFirestoreGeohashDetails {

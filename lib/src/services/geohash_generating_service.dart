@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:geoquery_firestore/src/constants.dart';
-import 'package:geoquery_firestore/src/enums/enums.dart';
+import 'package:geoquery_firestore/enums/enums.dart';
 import 'package:geoquery_firestore/src/models/geohash_details.dart';
 import 'package:dart_geohash/dart_geohash.dart';
 import 'package:geoquery_firestore/src/models/latlng_bounds.dart';

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geoquery_firestore/src/enums/enums.dart';
+import 'package:geoquery_firestore/enums/enums.dart';
 import 'package:geoquery_firestore/src/models/latlng_bounds.dart';
 import 'package:geoquery_firestore/src/services/geohash_generating_service.dart';
 import 'package:latlong2/latlong.dart';
