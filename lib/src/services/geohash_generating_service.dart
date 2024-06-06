@@ -2,9 +2,9 @@
 
 import 'package:geoquery_firestore/src/constants.dart';
 import 'package:geoquery_firestore/enums/enums.dart';
-import 'package:geoquery_firestore/src/models/geohash_details.dart';
+import 'package:geoquery_firestore/models/geohash_details.dart';
 import 'package:dart_geohash/dart_geohash.dart';
-import 'package:geoquery_firestore/src/models/latlng_bounds.dart';
+import 'package:geoquery_firestore/models/latlng_bounds.dart';
 import 'package:latlong2/latlong.dart';
 
 /// Service class for geohash operations related to GeoQuery.
