@@ -88,7 +88,7 @@ class GeoQueryFirestore {
   /// * `bounds`: The `LatLngBounds` object defining the search area.
   /// * `strict` (optional): Whether to use a stricter approach for filtering GeoHashes within bounds. Defaults to `true`.
   /// * `enablePagination` (optional): Whether to enable paging for retrieving results in batches. Defaults to `false`.
-  /// * `limit` (optional): The maximum number of documents to retrieve in a single query. Defaults to 20.
+  /// * `limit` (optional): The minimum number of documents to retrieve in a single query. Defaults to 20. The result length will be `limit`<=length<=`limit*2`
   Future<List<DocumentSnapshot>> byMapBounds({
     required LatLngBounds bounds,
     bool strict = true,
@@ -120,7 +120,7 @@ class GeoQueryFirestore {
 
       // Apply pagination logic for each query if enabled
       if (enablePagination && _lastDocuments[i] != null) {
-        queries[i] = query.startAfterDocument(_lastDocuments[i]!);
+        queries[i] = queries[i]!.startAfterDocument(_lastDocuments[i]!);
       }
     }
 
