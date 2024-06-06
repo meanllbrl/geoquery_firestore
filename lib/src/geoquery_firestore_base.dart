@@ -37,6 +37,10 @@ class GeoQueryFirestore {
   /// Value: The last document snapshot retrieved in the previous query execution.
   final Map<int, DocumentSnapshot?> _lastDocuments = {};
 
+  /// Stores the last calculated geohashes for pagination purposes.
+  /// Key: An identifier for the query execution (e.g., based on search range).
+  final Map<int, List<String>?> _lastGeoHashes = {};
+
   /// Retrieves documents within a specified geospatial range from a given center point.
   ///
   /// **Parameters:**
@@ -55,10 +59,13 @@ class GeoQueryFirestore {
     int limit = 20,
   }) async {
     int id = 3;
-    // Generate GeoHashes based on the chosen range or custom radius
-    List<String> searchHashes = GeohashGeneratingService(centerPoint: center)
+    List<String> rawhashes = GeohashGeneratingService(centerPoint: center)
         .getSurroundingGeohashes(selectedRange,
             customRangeInMeters: customRangeInMeters);
+    // Generate GeoHashes based on the chosen range or custom radius
+    List<String> searchHashes = _lastDocuments[id] != null
+        ? (_lastGeoHashes[id] ?? rawhashes)
+        : rawhashes;
     // Construct the Firestore query with GeoHash filtering
     Query firestoreQuery = query
         .where(geohashFieldPath, arrayContainsAny: searchHashes)
@@ -78,6 +85,7 @@ class GeoQueryFirestore {
 
     // Update the last document for the current query execution (identified by `id`)
     _lastDocuments[id] = documents.lastOrNull;
+    _lastGeoHashes[id] = searchHashes;
 
     return documents;
   }
@@ -95,31 +103,41 @@ class GeoQueryFirestore {
     bool enablePagination = false,
     int limit = 20,
   }) async {
+    bool isPaginationActive(int id) {
+      return enablePagination && _lastDocuments[id] != null;
+    }
+
     // Generate GeoHashes covering the bounds area
-    List<String> searchHashes =
+    //TODO IF PAGINATION IS ENABLED DONT CALCULATE AGAIN
+    List<String> rawHashes =
         GeohashGeneratingService(centerPoint: bounds.center)
             .getGeohashesByBounds(bounds, strict: strict)
             .toList();
+
+    List<List<String>> searchHashes = [
+      isPaginationActive(0)
+          ? (_lastGeoHashes[0] ??
+              (rawHashes.length > 10 ? rawHashes.sublist(0, 10) : rawHashes))
+          : rawHashes.length > 10
+              ? rawHashes.sublist(0, 10)
+              : rawHashes,
+      isPaginationActive(1)
+          ? (_lastGeoHashes[1] ??
+              (rawHashes.length > 10 ? rawHashes.sublist(10) : []))
+          : (rawHashes.length > 10 ? rawHashes.sublist(10) : [])
+    ];
 
     List<Query?> queries = [null, null];
 
     // Loop to set queries
     for (var i = 0; i < queries.length; i++) {
-      if (searchHashes.isEmpty) break;
+      if (searchHashes[i].isEmpty) break;
       queries[i] = query
-          .where(geohashFieldPath,
-              arrayContainsAny: i == 0 && searchHashes.length > 10
-                  ? searchHashes.sublist(0, 10)
-                  : searchHashes)
+          .where(geohashFieldPath, arrayContainsAny: searchHashes[i])
           .limit(limit);
 
-      // Remove used GeoHashes from the list
-      if (searchHashes.length > 10) {
-        searchHashes.removeRange(0, 10);
-      }
-
       // Apply pagination logic for each query if enabled
-      if (enablePagination && _lastDocuments[i] != null) {
+      if (isPaginationActive(i)) {
         queries[i] = queries[i]!.startAfterDocument(_lastDocuments[i]!);
       }
     }
@@ -130,8 +148,10 @@ class GeoQueryFirestore {
     int i = 0;
     for (var query in queries.where((element) => element != null)) {
       var docs = (await query!.get()).docs;
+
       //set last document
       _lastDocuments[i] = docs.lastOrNull;
+      _lastGeoHashes[i] = searchHashes[0] + searchHashes[1];
       documents.addAll(docs);
       i++;
     }
