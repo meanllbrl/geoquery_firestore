@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoquery_firestore/enums/enums.dart';
+import 'package:geoquery_firestore/models/empty_snapshot.dart';
 import 'package:geoquery_firestore/models/latlng_bounds.dart';
 import 'package:geoquery_firestore/src/services/geohash_generating_service.dart';
 import 'package:latlong2/latlong.dart';
@@ -59,6 +60,8 @@ class GeoQueryFirestore {
     int limit = 20,
   }) async {
     int id = 3;
+    if (_lastDocuments[id] is EmptySnapshot) return [];
+
     List<String> rawhashes = GeohashGeneratingService(centerPoint: center)
         .getSurroundingGeohashes(selectedRange,
             customRangeInMeters: customRangeInMeters);
@@ -84,7 +87,7 @@ class GeoQueryFirestore {
     final List<DocumentSnapshot> documents = (await firestoreQuery.get()).docs;
 
     // Update the last document for the current query execution (identified by `id`)
-    _lastDocuments[id] = documents.lastOrNull;
+    _lastDocuments[id] = documents.lastOrNull ?? EmptySnapshot();
     _lastGeoHashes[id] = searchHashes;
 
     return documents;
@@ -108,7 +111,6 @@ class GeoQueryFirestore {
     }
 
     // Generate GeoHashes covering the bounds area
-    //TODO IF PAGINATION IS ENABLED DONT CALCULATE AGAIN
     List<String> rawHashes =
         GeohashGeneratingService(centerPoint: bounds.center)
             .getGeohashesByBounds(bounds, strict: strict)
@@ -131,7 +133,7 @@ class GeoQueryFirestore {
 
     // Loop to set queries
     for (var i = 0; i < queries.length; i++) {
-      if (searchHashes[i].isEmpty) break;
+      if (searchHashes[i].isEmpty || _lastDocuments[i] is EmptySnapshot) break;
       queries[i] = query
           .where(geohashFieldPath, arrayContainsAny: searchHashes[i])
           .limit(limit);
@@ -150,7 +152,7 @@ class GeoQueryFirestore {
       var docs = (await query!.get()).docs;
 
       //set last document
-      _lastDocuments[i] = docs.lastOrNull;
+      _lastDocuments[i] = docs.lastOrNull ?? EmptySnapshot();
       _lastGeoHashes[i] = searchHashes[0];
       documents.addAll(docs);
       i++;
