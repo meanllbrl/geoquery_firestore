@@ -134,7 +134,7 @@ final documents = await query.byMapBounds(
 ```
 
 **Limit the Document Number**
-*limit is set 20 as default*
+*limit is set 20 as default (the document count may be limit<=length<=limit*2) *
 ```dart
 final documents = await query.byMapBounds(
   bounds: bounds,
