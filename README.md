@@ -145,7 +145,7 @@ final documents = await query.byMapBounds(
 ```
 
 ### Warnings
-* This is a solution, but it does not work 100% correctly. GeoHashes divide the Earth's surface into hexagonal cells, and their boundaries may not perfectly align with the actual search area, especially for irregular shapes or areas close to GeoHash cell boundaries. This can lead to some edge cases where documents might fall outside the intended search area.
+* This is a solution, but it does not work 100% correctly. GeoHashes divide the Earth's surface into rectangular cells, and their boundaries may not perfectly align with the actual search area, especially for irregular shapes or areas close to GeoHash cell boundaries. This can lead to some edge cases where documents might fall outside the intended search area.
 * You may receive an index error on the first run of your detailed queries. You can create an index with the link in the error message. It will then start working.
 
 ### Recommendations
