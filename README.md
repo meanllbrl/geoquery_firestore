@@ -4,7 +4,7 @@
 ![336932728-dba4ac67-d3c1-43d1-9389-2756b52427e4](https://github.com/meanllbrl/geoquery_firestore/assets/83311854/e732f5c4-7470-4c0c-a472-ebe83ff0694d)
 
 
-GeoQueryFirestore is a comprehensive package designed to facilitate efficient and performant geospatial queries within Firestore, a NoSQL database. While existing packages like [GeoFlutterFire]([url](https://pub.dev/packages/geoflutterfire_plus)) offer basic geospatial functionality, GeoQueryFirestore addresses their limitations by enabling orderby, limit, and pagination capabilities, particularly crucial for large datasets.
+GeoQueryFirestore is a comprehensive package designed to facilitate efficient and performant geospatial queries within Firestore, a NoSQL database. While existing packages like [GeoFlutterFire](https://pub.dev/packages/geoflutterfire_plus) offer basic geospatial functionality, GeoQueryFirestore addresses their limitations by enabling orderby, limit, and pagination capabilities, particularly crucial for large datasets.
 
 ## Motivation
 
